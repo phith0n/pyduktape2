@@ -16,7 +16,7 @@ extensions = [
 
 setup(
     name='pyduktape2',
-    version='0.2.2',
+    version='0.2.3',
     author='Stefano Dissegna',
     description='Python integration for the Duktape Javascript interpreter',
     long_description=long_description,
@@ -31,10 +31,9 @@ setup(
         'Programming Language :: JavaScript',
         'Topic :: Software Development :: Interpreters',
     ],
-
     packages=find_packages(exclude=['tests']),
     setup_requires=['setuptools>=18.0', 'Cython'],
     test_suite='tests',
-
+    install_requires=['Cython'],
     ext_modules=extensions,
 )
