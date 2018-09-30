@@ -9,8 +9,8 @@ with open(readme_path, encoding='utf-8') as readme:
 
 extensions = [
     Extension(
-      'pyduktape',
-      ['pyduktape.pyx']
+      'pyduktape2',
+      ['pyduktape2.pyx']
     )
 ]
 

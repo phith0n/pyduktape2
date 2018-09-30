@@ -2,7 +2,7 @@ import os
 from threading import Thread, Lock
 
 from tests import TestCase
-from pyduktape import DuktapeContext, JSError, JSProxy, DuktapeThreadError
+from pyduktape2 import DuktapeContext, JSError, JSProxy, DuktapeThreadError
 
 
 class TestContext(TestCase):
