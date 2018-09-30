@@ -31,15 +31,11 @@ Installation
 
 To install from pypi::
 
-    $ pip install -U setuptools
-    $ pip install pyduktape
+    $ pip install pyduktape2
 
 To install the latest version from github::
 
-    $ git clone https://github.com/stefano/pyduktape.git
-    $ cd pyduktape
-    $ pip install -U setuptools
-    $ python setup.py install
+    $ pip install git+https://github.com/phith0n/pyduktape2
 
 Running Javascript code
 -----------------------
@@ -142,7 +138,7 @@ interact with a Python object from Javascript::
             self.what = what
 
         def say(self):
-            print 'Hello, {}!'.format(self.what)
+            print('Hello, {}!'.format(self.what))
 
     context = pyduktape.DuktapeContext()
     context.set_globals(Hello=Hello)
@@ -177,14 +173,14 @@ You can use Python lists and dicts from Javascript, and viceversa::
     res = context.eval_js('[1, 2, 3]')
 
     for item in res:
-        print item
+        print(item)
 
     context.set_globals(lst=[4, 5, 6])
     context.eval_js('for (var i = 0; i < lst.length; i++) { print(lst[i]); }')
 
     res = context.eval_js('var x = {a: 1, b: 2}; x')
     for key, val in res.items():
-        print key, '=', val
+        print(key, '=', val)
     res.c = 3
     context.eval_js('print(x.c);')
 

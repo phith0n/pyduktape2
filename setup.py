@@ -15,12 +15,12 @@ extensions = [
 ]
 
 setup(
-    name='pyduktape',
+    name='pyduktape2',
     version='0.2.1',
     author='Stefano Dissegna',
     description='Python integration for the Duktape Javascript interpreter',
     long_description=long_description,
-    url='https://github.com/stefano/pyduktape',
+    url='https://github.com/phith0n/pyduktape2',
     license='GPL',
     keywords='javascript duktape embed',
     classifiers=[

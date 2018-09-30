@@ -4,5 +4,5 @@
 build
 dist
 pyduktape.c
-pyduktape*.so
-pyduktape.egg-info
+pyduktape2*.so
+pyduktape2.egg-info
