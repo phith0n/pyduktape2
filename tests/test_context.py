@@ -1,4 +1,6 @@
 import os
+import sys
+import unittest
 from threading import Thread, Lock
 
 from tests import TestCase
@@ -85,6 +87,15 @@ class TestExternalFiles(TestCase):
 
     def test_eval_file_with_extension(self):
         self.ctx.eval_js_file('js/test0.js')
+        res = self.ctx.get_global('res')
+
+        self.assertEqual(res, 2)
+
+    @unittest.skipIf(sys.version_info < (3, 4), "pathlib is new in version 3.4.")
+    def test_eval_file_pathlib(self):
+        from pathlib import Path
+        filename = Path('js/test0.js')
+        self.ctx.eval_js_file(filename)
         res = self.ctx.get_global('res')
 
         self.assertEqual(res, 2)
