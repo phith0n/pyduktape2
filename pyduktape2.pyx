@@ -204,15 +204,13 @@ cdef class DuktapeContext(object):
         return self._eval_js(eval_string)
 
     def eval_js_file(self, src_path):
+        src_path = str(src_path)
         with open(self.get_file_path(src_path), 'r', encoding='utf-8') as f:
             code = f.read()
 
         return self.eval_js(code)
 
     def get_file_path(self, src_path):
-        if not isinstance(src_path, basestring):
-            raise TypeError('Javascript source path must be a string')
-
         if not src_path.endswith('.js'):
             src_path = '{}.js'.format(src_path)
 
