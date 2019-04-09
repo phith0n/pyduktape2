@@ -15,6 +15,13 @@ class TestContext(TestCase):
 
         self.assertEqual(res, 2)
 
+    def test_eval_bytes(self):
+        ctx = DuktapeContext()
+
+        res = ctx.eval_js(b'233 * 233')
+
+        self.assertEqual(res, 233 * 233)
+
     def test_one_context_per_thread(self):
         ok = [True]
         ok_lock = Lock()
