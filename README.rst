@@ -43,9 +43,9 @@ Running Javascript code
 To run Javascript code, you need to create an execution context and
 use the method ``eval_js``::
 
-    import pyduktape
+    import pyduktape2
 
-    context = pyduktape.DuktapeContext()
+    context = pyduktape2.DuktapeContext()
     context.eval_js("print('Hello, world!');")
 
 Each execution context starts its own interpreter. Each context is
@@ -58,9 +58,9 @@ To evaluate external Javascript files, use ``eval_js_file``::
     print('Hello, World!');
 
     # in the Python interpreter
-    import pyduktape
+    import pyduktape2
 
-    context = pyduktape.DuktapeContext()
+    context = pyduktape2.DuktapeContext()
     context.eval_js_file('helloWorld.js')
 
 Pyduktape supports Javascript modules::
@@ -75,9 +75,9 @@ Pyduktape supports Javascript modules::
     helloWorld.sayHello();
 
     # in the Python interpreter
-    import pyduktape
+    import pyduktape2
 
-    context = pyduktape.DuktapeContext()
+    context = pyduktape2.DuktapeContext()
     context.eval_js_file('js/main')
 
 The ``.js`` extension is automatically added if missing.  Relative
@@ -88,9 +88,9 @@ change the base path using ``set_base_path``::
     print('Hello, World!');
 
     # in the Python interpreter
-    import pyduktape
+    import pyduktape2
 
-    context = pyduktape.DuktapeContext()
+    context = pyduktape2.DuktapeContext()
     context.set_base_path('js')
     context.eval_js_file('helloWorld')
 
@@ -99,28 +99,28 @@ Python and Javascript integration
 
 You can use ``set_globals`` to set Javascript global variables::
 
-    import pyduktape
+    import pyduktape2
 
     def say_hello(to):
         print 'Hello, {}!'.format(to)
 
-    context = pyduktape.DuktapeContext()
+    context = pyduktape2.DuktapeContext()
     context.set_globals(sayHello=say_hello, world='World')
     context.eval_js("sayHello(world);")
 
 You can use ``get_global`` to access Javascript global variables::
 
-    import pyduktape
+    import pyduktape2
 
-    context = pyduktape.DuktapeContext()
+    context = pyduktape2.DuktapeContext()
     context.eval_js("var helloWorld = 'Hello, World!';")
     print context.get_global('helloWorld')
 
 ``eval_js`` returns the value of the last expression::
 
-    import pyduktape
+    import pyduktape2
 
-    context = pyduktape.DuktapeContext()
+    context = pyduktape2.DuktapeContext()
     hello_world = context.eval_js("var helloWorld = 'Hello, World!'; helloWorld")
     print hello_world
 
@@ -131,7 +131,7 @@ accessed. Primitive types (int, float, string, None) are converted to
 equivalent Javascript primitives.  The following code shows how to
 interact with a Python object from Javascript::
 
-    import pyduktape
+    import pyduktape2
 
     class Hello(object):
         def __init__(self, what):
@@ -140,16 +140,16 @@ interact with a Python object from Javascript::
         def say(self):
             print('Hello, {}!'.format(self.what))
 
-    context = pyduktape.DuktapeContext()
+    context = pyduktape2.DuktapeContext()
     context.set_globals(Hello=Hello)
     context.eval_js("var helloWorld = Hello('World'); helloWorld.say();")
 
 In the same way, you can use Javascript objects in Python.  You can
 use the special method `new` to instantiate an object::
 
-    import pyduktape
+    import pyduktape2
 
-    context = pyduktape.DuktapeContext()
+    context = pyduktape2.DuktapeContext()
     Hello = context.eval_js("""
     function Hello(what) {
         this.what = what;
@@ -167,9 +167,9 @@ use the special method `new` to instantiate an object::
 
 You can use Python lists and dicts from Javascript, and viceversa::
 
-    import pyduktape
+    import pyduktape2
 
-    context = pyduktape.DuktapeContext()
+    context = pyduktape2.DuktapeContext()
     res = context.eval_js('[1, 2, 3]')
 
     for item in res:
