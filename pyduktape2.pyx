@@ -502,12 +502,12 @@ cdef duk_ret_t module_search(duk_context *ctx):
     module_id = duk_require_string(ctx, -1)
 
     try:
-        with open(py_ctx.get_file_path(module_id.decode())) as module:
+        with open(py_ctx.get_file_path(module_id.decode()), 'rb') as module:
             source = module.read()
     except:
-        duk_error(ctx, DUK_ERR_ERROR, 'Could not load module: %s', module_id)
+        duk_error(ctx, DUK_ERR_ERROR, b'Could not load module: %s', module_id)
 
-    duk_push_string(ctx, source.encode())
+    duk_push_string(ctx, source)
 
     return 1
 
@@ -550,7 +550,7 @@ cdef object to_python(DuktapeContext py_ctx, duk_idx_t index, JSProxy bind_proxy
 
 
 cdef object get_python_string(duk_context *ctx, duk_idx_t index):
-    return duk_get_string(ctx, index).decode()
+    return duk_get_string(ctx, index).decode(errors='replace')
 
 
 cdef void to_js(duk_context *ctx, object value) except *:
@@ -738,7 +738,7 @@ cdef void push_callback(duk_context *ctx, object fn) except *:
 
 cdef duk_ret_t callback(duk_context *ctx):
     if duk_is_constructor_call(ctx):
-        duk_error(ctx, DUK_ERR_ERROR, 'can\'t use new on python objects')
+        duk_error(ctx, DUK_ERR_ERROR, b'can\'t use new on python objects')
 
     py_ctx = get_python_context(ctx)
 
