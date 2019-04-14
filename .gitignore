@@ -6,3 +6,4 @@ dist
 pyduktape2.c
 pyduktape2*.so
 pyduktape2.egg-info
+/.idea

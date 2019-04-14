@@ -1,9 +1,5 @@
 import contextlib
-import json
 import os
-import select
-import socket
-import sys
 import threading
 import traceback
 
@@ -177,7 +173,7 @@ cdef class DuktapeContext(object):
         duk_put_global_string(self.ctx, name)
 
     def get_global(self, name):
-        if not isinstance(name, basestring):
+        if not isinstance(name, str):
             raise TypeError('Global variable name must be a string, {} found'.format(type(name)))
 
         duk_get_global_string(self.ctx, name.encode())
@@ -384,7 +380,7 @@ cdef class JSProxy(object):
     def __getitem__(self, name):
         self.__ref.py_ctx._check_thread()
 
-        if not isinstance(name, (int, long, basestring)):
+        if not isinstance(name, (int, str)):
             raise TypeError('{} is not a valid index'.format(name))
 
         return getattr(self, unicode(name))
@@ -463,7 +459,7 @@ cdef class JSProxy(object):
 
         if is_array:
             duk_pop(ctx)
-            for i in xrange(0, self.length):
+            for i in range(0, self.length):
                 yield self[i]
         elif is_object:
             duk_enum(ctx, -1, DUK_ENUM_OWN_PROPERTIES_ONLY)
@@ -565,7 +561,7 @@ cdef void to_js(duk_context *ctx, object value) except *:
         duk_push_boolean(ctx, int(value))
         return
 
-    if isinstance(value, (int, long)):
+    if isinstance(value, int):
         max_positive_js_int = 1 << 53
         min_negative_js_int = -(1 << 53) - 1
 
@@ -658,7 +654,7 @@ cdef duk_ret_t py_proxy_get(duk_context *ctx):
             try:
                 value = target[key]
             except (TypeError, IndexError, KeyError):
-                if isinstance(key, basestring):
+                if isinstance(key, str):
                     value = getattr(target, key, None)
 
         to_js(ctx, value)
@@ -749,7 +745,7 @@ cdef duk_ret_t callback(duk_context *ctx):
 
     with wrap_python_exception(py_ctx):
         args = []
-        for i in xrange(0, n_args):
+        for i in range(0, n_args):
             args.append(to_python(py_ctx, i - n_args))
 
         duk_push_current_function(ctx)
