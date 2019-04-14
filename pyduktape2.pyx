@@ -61,6 +61,7 @@ cdef extern from 'vendor/duktape.c':
     cdef duk_bool_t duk_is_array(duk_context *ctx, duk_idx_t index)
     cdef duk_int_t duk_get_int(duk_context *ctx, duk_idx_t index)
     cdef void duk_push_undefined(duk_context *ctx)
+    cdef void duk_push_null(duk_context *ctx)
     cdef void duk_push_boolean(duk_context *ctx, duk_bool_t value)
     cdef duk_bool_t duk_put_prop(duk_context *ctx, duk_idx_t obj_index)
     cdef duk_idx_t duk_push_object(duk_context *ctx)
@@ -165,7 +166,7 @@ cdef class DuktapeContext(object):
     def set_globals(self, **kwargs):
         self._check_thread()
 
-        for name, value in kwargs.iteritems():
+        for name, value in kwargs.items():
             self._set_global(name.encode(), value)
 
     cdef void _set_global(self, const char *name, object value) except *:
@@ -554,7 +555,7 @@ cdef object get_python_string(duk_context *ctx, duk_idx_t index):
 
 cdef void to_js(duk_context *ctx, object value) except *:
     if value is None:
-        duk_push_undefined(ctx)
+        duk_push_null(ctx)
         return
 
     if value is False or value is True:

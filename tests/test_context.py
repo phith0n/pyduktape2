@@ -251,6 +251,13 @@ class TestPyProxy(TestCase):
     def setUp(self):
         self.ctx = DuktapeContext()
 
+    def test_py_set_null(self):
+        self.ctx.set_globals(x=None)
+
+        self.assertIs(self.ctx.eval_js('x'), None)
+        self.assertEqual(self.ctx.eval_js('typeof x'), 'object')
+        self.assertTrue(self.ctx.eval_js('x === null'))
+
     def test_py_proxy_get(self):
         class X(object):
             def __init__(self):
