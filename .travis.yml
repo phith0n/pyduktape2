@@ -1,8 +1,10 @@
 language: python
+dist: xenial
 python:
 - '3.4'
 - '3.5'
 - '3.6'
+- '3.7'
 install:
 - pip install -U setuptools
 - python setup.py install
@@ -15,8 +17,3 @@ deploy:
   on:
     tags: true
     python: '3.6'
-matrix:
-  include:
-    - python: 3.7
-      dist: xenial
-      sudo: true
