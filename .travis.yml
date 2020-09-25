@@ -1,10 +1,10 @@
 language: python
-dist: xenial
+dist: bionic
 python:
-- '3.4'
 - '3.5'
 - '3.6'
 - '3.7'
+- '3.8'
 install:
 - pip install -U setuptools
 - python setup.py install
@@ -16,4 +16,4 @@ deploy:
   password: "$PYPI_PASSWORD"
   on:
     tags: true
-    python: '3.6'
+    python: '3.7'
