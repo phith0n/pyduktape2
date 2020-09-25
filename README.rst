@@ -46,7 +46,7 @@ use the method ``eval_js``::
     import pyduktape2
 
     context = pyduktape2.DuktapeContext()
-    context.eval_js("print('Hello, world!');")
+    context.eval_js("print(Duktape.version);")
 
 Each execution context starts its own interpreter. Each context is
 independent, and tied to the Python thread that created it. Memory is
