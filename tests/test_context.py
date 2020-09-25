@@ -1,8 +1,6 @@
 import os
 import sys
-import io
 import unittest
-import contextlib
 from threading import Thread, Lock
 
 from tests import TestCase
