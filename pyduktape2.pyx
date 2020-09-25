@@ -108,6 +108,14 @@ cdef extern from 'vendor/duk_module_duktape.c':
     cdef void duk_module_duktape_init(duk_context *ctx)
 
 
+cdef extern from 'vendor/duk_print_alert.c':
+    ctypedef unsigned int duk_uint_t
+    ctypedef struct duk_context:
+        pass
+
+    cdef void duk_print_alert_init(duk_context *ctx, duk_uint_t flags)
+
+
 class DuktapeError(Exception):
     pass
 
@@ -151,6 +159,7 @@ cdef class DuktapeContext(object):
         set_python_context(self.ctx, self)
 
         duk_module_duktape_init(self.ctx)
+        duk_print_alert_init(self.ctx, 0)
         self._setup_module_search_function()
 
     cdef void _setup_module_search_function(self):

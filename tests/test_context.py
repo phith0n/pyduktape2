@@ -1,6 +1,8 @@
 import os
 import sys
+import io
 import unittest
+import contextlib
 from threading import Thread, Lock
 
 from tests import TestCase
@@ -79,6 +81,17 @@ class TestContext(TestCase):
 
         with self.assertRaises(JSError):
             ctx.eval_js('bad syntax')
+
+    def test_print_alert(self):
+        ctx = DuktapeContext()
+
+        ctx.eval_js("print('hello')")
+        ctx.eval_js("alert('world')")
+
+    def test_duktape_version(self):
+        ctx = DuktapeContext()
+
+        self.assertGreaterEqual(ctx.eval_js('Duktape.version'), 20500)
 
 
 class TestExternalFiles(TestCase):
