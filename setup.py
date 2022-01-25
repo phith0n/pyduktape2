@@ -35,4 +35,6 @@ setup(
     test_suite='tests',
     install_requires=['Cython'],
     ext_modules=extensions,
+    include_package_data=True,
+    zip_safe=False
 )
