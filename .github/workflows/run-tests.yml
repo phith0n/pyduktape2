@@ -27,4 +27,4 @@ jobs:
       - name: Test with pytest
         run: |
           python -c "import pyduktape2; ctx = pyduktape2.DuktapeContext(); ctx.eval_js('''print('Duktape Version: '  + Duktape.version)''')"
-          python -m pytest -vv --tb=long --color=yes --cov=pyduktape2 --no-cov-on-fail --cov-branch --cov-report=term-missing:skip-covered
+          python -m pytest -vv --tb=long
