@@ -23,5 +23,5 @@ jobs:
           python setup.py install
       - name: Test with pytest
         run: |
-          python -c 'import pyduktape2; ctx = pyduktape2.DuktapeContext(); ctx.eval_js("print(\"Duktape Version: \"  + Duktape.version)")'
+          python -c "import pyduktape2; ctx = pyduktape2.DuktapeContext(); ctx.eval_js('''print('Duktape Version: '  + Duktape.version)''')"
           pytest
