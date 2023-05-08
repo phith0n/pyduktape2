@@ -33,7 +33,6 @@ setup(
     packages=find_packages(exclude=['tests']),
     setup_requires=['setuptools>=18.0', 'Cython'],
     test_suite='tests',
-    install_requires=['Cython'],
     ext_modules=extensions,
     include_package_data=True,
     zip_safe=False
