@@ -32,7 +32,7 @@ setup(
     ],
     packages=find_packages(exclude=['tests']),
     setup_requires=['setuptools>=18.0', 'Cython'],
-    extras_require={'test': ['pytest']},
+    extras_require={'test': ['pytest'], 'coverage': ['pytest-cov']},
     test_suite='tests',
     ext_modules=extensions,
     include_package_data=True,

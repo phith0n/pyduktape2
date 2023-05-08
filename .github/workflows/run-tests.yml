@@ -23,8 +23,8 @@ jobs:
           python -m pip install -U setuptools wheel
       - name: Install package under test
         run: |
-          python -m pip install -vv .[test]
+          python -m pip install -vv .[coverage]
       - name: Test with pytest
         run: |
           python -c "import pyduktape2; ctx = pyduktape2.DuktapeContext(); ctx.eval_js('''print('Duktape Version: '  + Duktape.version)''')"
-          python -m pytest -vv --tb=full --color=yes
+          python -m pytest -vv --tb=long --color=yes --cov=pyduktape2 --no-cov-on-fail --cov-branch --cov-report=term-missing:skip-covered
