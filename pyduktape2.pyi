@@ -4,19 +4,6 @@ import contextlib
 import os
 import threading
 import traceback
-DUK_TYPE_NONE : int
-DUK_TYPE_UNDEFINED : int
-DUK_TYPE_NULL : int
-DUK_TYPE_BOOLEAN : int
-DUK_TYPE_NUMBER : int
-DUK_TYPE_STRING : int
-DUK_TYPE_OBJECT : int
-DUK_TYPE_BUFFER : int
-DUK_TYPE_POINTER : int
-DUK_TYPE_LIGHTFUNC : int
-DUK_ENUM_OWN_PROPERTIES_ONLY : None
-DUK_VARARGS : int
-DUK_ERR_ERROR : int
 class DuktapeError(Exception):
     pass
 
