@@ -34,7 +34,6 @@ setup(
     packages=find_packages(exclude=['tests']),
     setup_requires=['setuptools>=18.0', 'Cython<3'],
     test_suite='tests',
-    install_requires=['Cython<3'],
     ext_modules=extensions,
     include_package_data=True,
     zip_safe=False
