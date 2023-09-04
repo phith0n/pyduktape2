@@ -6,10 +6,10 @@ on:
         description: "The branch, tag or SHA to release from"
         required: true
         default: "master"
-      dry:
-        description: "Only publish the release to the test environment"
-        required: false
-        default: "false"
+      target:
+        description: "Which environment(test/live/all) should be published"
+        required: true
+        default: "all"
 
 jobs:
   build_wheels:
@@ -73,9 +73,10 @@ jobs:
           user: __token__
           password: ${{ secrets.PYPI_TEST_TOKEN }}
           repository_url: https://test.pypi.org/legacy/
+        if: ${{ github.event.inputs.target == 'all' || github.event.inputs.target == 'test' }}
       - name: Publish package to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: __token__
           password: ${{ secrets.PYPI_TOKEN }}
-        if: ${{ github.event.inputs.dry != 'true' }}
+        if: ${{ github.event.inputs.target == 'all' || github.event.inputs.target == 'live' }}
