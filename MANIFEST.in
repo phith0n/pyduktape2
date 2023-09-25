@@ -9,3 +9,5 @@ include vendor/duk_print_alert.c
 include vendor/duk_print_alert.h
 include vendor/AUTHORS.txt
 include vendor/LICENSE.txt
+
+recursive-include  tests  *.js

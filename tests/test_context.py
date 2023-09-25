@@ -3,7 +3,7 @@ import sys
 import unittest
 from threading import Thread, Lock
 
-from tests import TestCase
+from unittest import TestCase
 from pyduktape2 import DuktapeContext, JSError, JSProxy, DuktapeThreadError
 
 

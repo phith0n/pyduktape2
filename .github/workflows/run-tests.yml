@@ -5,10 +5,12 @@ on: [push, pull_request]
 jobs:
   tests:
     name: Run tests
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}-latest
     strategy:
+      fail-fast: false
       matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11"]
+        os: ["ubuntu", "macos", "windows"]
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12.0-rc.3"]
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
@@ -18,9 +20,11 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -U setuptools flake8 pytest
-          python setup.py install
+          python -m pip install -U setuptools wheel
+      - name: Install package under test
+        run: |
+          python -m pip install -vv .[test]
       - name: Test with pytest
         run: |
-          python -c 'import pyduktape2; ctx = pyduktape2.DuktapeContext(); ctx.eval_js("print(\"Duktape Version: \"  + Duktape.version)")'
-          pytest
+          python -c "import pyduktape2; ctx = pyduktape2.DuktapeContext(); ctx.eval_js('''print('Duktape Version: '  + Duktape.version)''')"
+          python -m pytest -vv --tb=long

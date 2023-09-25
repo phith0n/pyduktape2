@@ -33,6 +33,7 @@ setup(
     ],
     packages=find_packages(exclude=['tests']),
     setup_requires=['setuptools>=18.0', 'Cython<3'],
+    extras_require={'test': ['pytest']},
     test_suite='tests',
     ext_modules=extensions,
     include_package_data=True,
