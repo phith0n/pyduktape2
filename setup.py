@@ -1,18 +1,29 @@
 from os import path
-
 from setuptools import setup, find_packages, Extension
 from codecs import open
+from Cython.Build import cythonize
+from Cython.Distutils import build_ext
 
 readme_path = path.join(path.abspath(path.dirname(__file__)), 'README.rst')
 with open(readme_path, encoding='utf-8') as readme:
     long_description = readme.read()
 
-extensions = [
-    Extension(
-      'pyduktape2',
-      ['pyduktape2.pyx']
-    )
-]
+ext_modules = cythonize(
+    [
+        Extension(
+            'pyduktape2',
+            ['pyduktape2.pyx', 'vendor/duk_module_duktape.c', 'vendor/duk_print_alert.c', 'vendor/duktape.c'],
+            include_dirs=['vendor'],
+        )
+    ],
+    gdb_debug=True,
+    annotate=True,
+    compiler_directives={
+        'language_level': 3,
+        'boundscheck': True,
+        'wraparound': True,
+    }
+)
 
 setup(
     name='pyduktape2',
@@ -21,11 +32,10 @@ setup(
     description='Python integration for the Duktape Javascript interpreter',
     long_description=long_description,
     url='https://github.com/phith0n/pyduktape2',
-    license='GPL',
+    license='GPL-2.0-only',
     keywords='javascript duktape embed',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
-        'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
         'Programming Language :: Cython',
         'Programming Language :: Python :: 3',
         'Programming Language :: JavaScript',
@@ -34,7 +44,8 @@ setup(
     packages=find_packages(exclude=['tests']),
     setup_requires=['setuptools>=18.0', 'Cython>=3'],
     test_suite='tests',
-    ext_modules=extensions,
+    ext_modules=ext_modules,
+    cmdclass={'build_ext': build_ext},
     include_package_data=True,
     zip_safe=False
 )
