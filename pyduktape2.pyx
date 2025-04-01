@@ -490,7 +490,7 @@ cdef class JSProxy(object):
         self.__ref.to_js()
 
 
-cdef duk_ret_t call_new(duk_context *ctx):
+cdef duk_ret_t call_new(duk_context *ctx) noexcept:
     # [ constructor arg1 arg2 ... argn nargs ]
     nargs = duk_require_int(ctx, -1)
     duk_pop(ctx)
@@ -507,7 +507,7 @@ cdef duk_ret_t safe_new(duk_context *ctx, int nargs):
     return duk_safe_call(ctx, call_new, NULL, nargs + 2, 1)
 
 
-cdef duk_ret_t module_search(duk_context *ctx):
+cdef duk_ret_t module_search(duk_context *ctx) noexcept:
     py_ctx = get_python_context(ctx)
     module_id = duk_require_string(ctx, -1)
 
@@ -631,7 +631,7 @@ cdef void push_py_proxy(duk_context *ctx, object obj) except *:
     py_ctx.register_proxy(proxy_ptr, target_ptr, obj)
 
 
-cdef duk_ret_t py_proxy_finalizer(duk_context *ctx):
+cdef duk_ret_t py_proxy_finalizer(duk_context *ctx) noexcept:
     py_ctx = get_python_context(ctx)
 
     target_ptr = duk_get_heapptr(ctx, -1)
@@ -640,7 +640,7 @@ cdef duk_ret_t py_proxy_finalizer(duk_context *ctx):
     return 0
 
 
-cdef duk_ret_t py_proxy_get(duk_context *ctx):
+cdef duk_ret_t py_proxy_get(duk_context *ctx) noexcept:
     py_ctx = get_python_context(ctx)
     n_args = duk_get_top(ctx)
 
@@ -673,7 +673,7 @@ cdef duk_ret_t py_proxy_get(duk_context *ctx):
     return 1
 
 
-cdef duk_ret_t py_proxy_has(duk_context *ctx):
+cdef duk_ret_t py_proxy_has(duk_context *ctx) noexcept:
     py_ctx = get_python_context(ctx)
     n_args = duk_get_top(ctx)
 
@@ -700,7 +700,7 @@ cdef duk_ret_t py_proxy_has(duk_context *ctx):
     return 1
 
 
-cdef duk_ret_t py_proxy_set(duk_context *ctx):
+cdef duk_ret_t py_proxy_set(duk_context *ctx) noexcept:
     py_ctx = get_python_context(ctx)
     n_args = duk_get_top(ctx)
 
@@ -725,7 +725,7 @@ cdef duk_ret_t py_proxy_set(duk_context *ctx):
     return 1
 
 
-cdef duk_ret_t callback_finalizer(duk_context *ctx):
+cdef duk_ret_t callback_finalizer(duk_context *ctx) noexcept:
     py_ctx = get_python_context(ctx)
     target_ptr = duk_get_heapptr(ctx, -1)
     py_ctx.unregister_object(target_ptr)
@@ -746,7 +746,7 @@ cdef void push_callback(duk_context *ctx, object fn) except *:
     py_ctx.register_object(duk_get_heapptr(ctx, -1), fn)
 
 
-cdef duk_ret_t callback(duk_context *ctx):
+cdef duk_ret_t callback(duk_context *ctx) noexcept:
     if duk_is_constructor_call(ctx):
         duk_error(ctx, DUK_ERR_ERROR, b'can\'t use new on python objects')
 
