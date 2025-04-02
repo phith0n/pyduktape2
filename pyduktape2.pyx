@@ -42,7 +42,7 @@ cdef extern from 'vendor/duktape.c':
     ctypedef void (*duk_free_function) (void *udata, void *ptr)
     ctypedef void (*duk_fatal_function) (duk_context *ctx, duk_errcode_t code, const char *msg)
     ctypedef duk_ret_t (*duk_c_function)(duk_context *ctx)
-    ctypedef duk_ret_t (*duk_safe_call_function) (duk_context *ctx)
+    ctypedef duk_ret_t (*duk_safe_call_function) (duk_context *ctx, void *udata)
 
     cdef duk_context* duk_create_heap(duk_alloc_function alloc_func, duk_realloc_function realloc_func, duk_free_function free_func, void *heap_udata, duk_fatal_function fatal_handler)
     cdef duk_context* duk_create_heap_default()
@@ -490,7 +490,7 @@ cdef class JSProxy(object):
         self.__ref.to_js()
 
 
-cdef duk_ret_t call_new(duk_context *ctx) noexcept:
+cdef duk_ret_t call_new(duk_context *ctx, void *udata) noexcept:
     # [ constructor arg1 arg2 ... argn nargs ]
     nargs = duk_require_int(ctx, -1)
     duk_pop(ctx)
