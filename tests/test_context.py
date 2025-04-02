@@ -10,10 +10,9 @@ from pyduktape2 import DuktapeContext, JSError, JSProxy, DuktapeThreadError
 class TestContext(TestCase):
     def test_eval_simple_expression(self):
         ctx = DuktapeContext()
-
-        res = ctx.eval_js('1 + 1')
-
-        self.assertEqual(res, 2)
+        self.assertEqual(ctx.eval_js('1 + 1'), 2)
+        self.assertEqual(ctx.eval_js('"a" + "b"'), "ab")
+        self.assertEqual(ctx.eval_js('2 * 2'), 4)
 
     def test_eval_bytes(self):
         ctx = DuktapeContext()
