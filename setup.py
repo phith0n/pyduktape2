@@ -12,7 +12,7 @@ ext_modules = cythonize(
     [
         Extension(
             'pyduktape2',
-            ['pyduktape2.pyx', 'vendor/duk_module_duktape.c', 'vendor/duk_print_alert.c', 'vendor/duktape.c'],
+            ['pyduktape2.pyx'],
             include_dirs=['vendor'],
         )
     ],

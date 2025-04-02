@@ -547,7 +547,7 @@ cdef object to_python(DuktapeContext py_ctx, duk_idx_t index, JSProxy bind_proxy
             return value
 
     if type_ == DUK_TYPE_STRING:
-        return get_python_string(ctx, index).decode()
+        return get_python_string(ctx, index)
 
     if type_ == DUK_TYPE_OBJECT:
         value_ptr = duk_get_heapptr(ctx, index)
