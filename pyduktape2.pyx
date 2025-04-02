@@ -1,3 +1,4 @@
+# language_level=3
 import contextlib
 import os
 import threading
@@ -163,9 +164,9 @@ cdef class DuktapeContext(object):
         self._setup_module_search_function()
 
     cdef void _setup_module_search_function(self):
-        duk_get_global_string(self.ctx, 'Duktape')
+        duk_get_global_string(self.ctx, b"Duktape")
         duk_push_c_function(self.ctx, module_search, 1)
-        duk_put_prop_string(self.ctx, -2, 'modSearch')
+        duk_put_prop_string(self.ctx, -2, b"modSearch")
         duk_pop(self.ctx)
 
     def _check_thread(self):
@@ -246,8 +247,8 @@ cdef class DuktapeContext(object):
         return result
 
     cdef object get_error(self):
-        if duk_get_prop_string(self.ctx, -1, 'stack') == 0:
-            error = duk_safe_to_string(self.ctx, -2)
+        if duk_get_prop_string(self.ctx, -1, b'stack') == 0:
+            error = duk_safe_to_string(self.ctx, -2).decode()
         else:
             error = to_python(self, -1)
 
@@ -305,13 +306,13 @@ cdef class DuktapeContext(object):
 cdef void set_python_context(duk_context *ctx, DuktapeContext py_ctx):
     duk_push_global_stash(ctx)
     duk_push_pointer(ctx, <void*>py_ctx)
-    duk_put_prop_string(ctx, -2, '__py_ctx')
+    duk_put_prop_string(ctx, -2, b"__py_ctx")
     duk_pop(ctx)
 
 
 cdef DuktapeContext get_python_context(duk_context *ctx):
     duk_push_global_stash(ctx)
-    duk_get_prop_string(ctx, -1, '__py_ctx')
+    duk_get_prop_string(ctx, -1, b"__py_ctx")
     py_ctx = <DuktapeContext>duk_get_pointer(ctx, -1)
     duk_pop_2(ctx)
 
@@ -393,7 +394,7 @@ cdef class JSProxy(object):
         if not isinstance(name, (int, str)):
             raise TypeError('{} is not a valid index'.format(name))
 
-        return getattr(self, unicode(name))
+        return getattr(self, str(name))
 
     def __repr__(self):
         self.__ref.py_ctx._check_thread()
@@ -404,7 +405,7 @@ cdef class JSProxy(object):
         res = duk_safe_to_string(ctx, -1)
         duk_pop(ctx)
 
-        return '<JSProxy: {}, bind_proxy={}>'.format(res, self.__bind_proxy.__repr__())
+        return '<JSProxy: {}, bind_proxy={}>'.format(res.decode(), self.__bind_proxy.__repr__())
 
     def __call__(self, *args):
         self.__ref.py_ctx._check_thread()
@@ -489,7 +490,7 @@ cdef class JSProxy(object):
         self.__ref.to_js()
 
 
-cdef duk_ret_t call_new(duk_context *ctx):
+cdef duk_ret_t call_new(duk_context *ctx) noexcept:
     # [ constructor arg1 arg2 ... argn nargs ]
     nargs = duk_require_int(ctx, -1)
     duk_pop(ctx)
@@ -506,7 +507,7 @@ cdef duk_ret_t safe_new(duk_context *ctx, int nargs):
     return duk_safe_call(ctx, call_new, NULL, nargs + 2, 1)
 
 
-cdef duk_ret_t module_search(duk_context *ctx):
+cdef duk_ret_t module_search(duk_context *ctx) noexcept:
     py_ctx = get_python_context(ctx)
     module_id = duk_require_string(ctx, -1)
 
@@ -603,7 +604,7 @@ cdef void to_js(duk_context *ctx, object value) except *:
 cdef void push_py_proxy(duk_context *ctx, object obj) except *:
     py_ctx = get_python_context(ctx)
 
-    duk_get_global_string(ctx, 'Proxy')
+    duk_get_global_string(ctx, b'Proxy')
 
     duk_push_object(ctx) # proxy target
     duk_push_c_function(ctx, py_proxy_finalizer, 1)
@@ -613,13 +614,13 @@ cdef void push_py_proxy(duk_context *ctx, object obj) except *:
     duk_push_object(ctx) # proxy options
 
     duk_push_c_function(ctx, py_proxy_get, 3)
-    duk_put_prop_string(ctx, -2, 'get')
+    duk_put_prop_string(ctx, -2, b'get')
 
     duk_push_c_function(ctx, py_proxy_set, 4)
-    duk_put_prop_string(ctx, -2, 'set')
+    duk_put_prop_string(ctx, -2, b'set')
 
     duk_push_c_function(ctx, py_proxy_has, 2)
-    duk_put_prop_string(ctx, -2, 'has')
+    duk_put_prop_string(ctx, -2, b'has')
 
     if safe_new(ctx, 2) != 0:
         error = py_ctx.get_error()
@@ -630,7 +631,7 @@ cdef void push_py_proxy(duk_context *ctx, object obj) except *:
     py_ctx.register_proxy(proxy_ptr, target_ptr, obj)
 
 
-cdef duk_ret_t py_proxy_finalizer(duk_context *ctx):
+cdef duk_ret_t py_proxy_finalizer(duk_context *ctx) noexcept:
     py_ctx = get_python_context(ctx)
 
     target_ptr = duk_get_heapptr(ctx, -1)
@@ -639,7 +640,7 @@ cdef duk_ret_t py_proxy_finalizer(duk_context *ctx):
     return 0
 
 
-cdef duk_ret_t py_proxy_get(duk_context *ctx):
+cdef duk_ret_t py_proxy_get(duk_context *ctx) noexcept:
     py_ctx = get_python_context(ctx)
     n_args = duk_get_top(ctx)
 
@@ -672,7 +673,7 @@ cdef duk_ret_t py_proxy_get(duk_context *ctx):
     return 1
 
 
-cdef duk_ret_t py_proxy_has(duk_context *ctx):
+cdef duk_ret_t py_proxy_has(duk_context *ctx) noexcept:
     py_ctx = get_python_context(ctx)
     n_args = duk_get_top(ctx)
 
@@ -699,7 +700,7 @@ cdef duk_ret_t py_proxy_has(duk_context *ctx):
     return 1
 
 
-cdef duk_ret_t py_proxy_set(duk_context *ctx):
+cdef duk_ret_t py_proxy_set(duk_context *ctx) noexcept:
     py_ctx = get_python_context(ctx)
     n_args = duk_get_top(ctx)
 
@@ -724,7 +725,7 @@ cdef duk_ret_t py_proxy_set(duk_context *ctx):
     return 1
 
 
-cdef duk_ret_t callback_finalizer(duk_context *ctx):
+cdef duk_ret_t callback_finalizer(duk_context *ctx) noexcept:
     py_ctx = get_python_context(ctx)
     target_ptr = duk_get_heapptr(ctx, -1)
     py_ctx.unregister_object(target_ptr)
@@ -745,7 +746,7 @@ cdef void push_callback(duk_context *ctx, object fn) except *:
     py_ctx.register_object(duk_get_heapptr(ctx, -1), fn)
 
 
-cdef duk_ret_t callback(duk_context *ctx):
+cdef duk_ret_t callback(duk_context *ctx) noexcept:
     if duk_is_constructor_call(ctx):
         duk_error(ctx, DUK_ERR_ERROR, b'can\'t use new on python objects')
 

@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=18.0", "Cython>=3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyduktape2"
+version = "0.5.0"
+description = "Python integration for the Duktape Javascript interpreter"
+readme = "README.rst"
+requires-python = ">=3.6"
+license = {text = "GPL-2.0-only"}
+authors = [
+    {name = "Stefano Dissegna"}
+]
+keywords = ["javascript", "duktape", "embed"]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Programming Language :: Cython",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: JavaScript",
+    "Topic :: Software Development :: Interpreters",
+]
+
+[project.urls]
+Homepage = "https://github.com/phith0n/pyduktape2"
