@@ -9,3 +9,4 @@ pyduktape2.egg-info
 /.idea
 /cython_debug
 pyduktape2.html
+.pytest_cache

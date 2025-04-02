@@ -16,12 +16,8 @@ ext_modules = cythonize(
             include_dirs=['vendor'],
         )
     ],
-    gdb_debug=True,
-    annotate=True,
     compiler_directives={
         'language_level': 3,
-        'boundscheck': True,
-        'wraparound': True,
     }
 )
 

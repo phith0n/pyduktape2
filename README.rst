@@ -102,7 +102,7 @@ You can use ``set_globals`` to set Javascript global variables::
     import pyduktape2
 
     def say_hello(to):
-        print 'Hello, {}!'.format(to)
+        print('Hello, {}!'.format(to))
 
     context = pyduktape2.DuktapeContext()
     context.set_globals(sayHello=say_hello, world='World')
@@ -114,7 +114,7 @@ You can use ``get_global`` to access Javascript global variables::
 
     context = pyduktape2.DuktapeContext()
     context.eval_js("var helloWorld = 'Hello, World!';")
-    print context.get_global('helloWorld')
+    print(context.get_global('helloWorld'))
 
 ``eval_js`` returns the value of the last expression::
 
@@ -122,7 +122,7 @@ You can use ``get_global`` to access Javascript global variables::
 
     context = pyduktape2.DuktapeContext()
     hello_world = context.eval_js("var helloWorld = 'Hello, World!'; helloWorld")
-    print hello_world
+    print(hello_world)
 
 You can seamlessly use Python objects and functions within Javascript
 code.  There are some limitations, though: any Python callable can
@@ -192,4 +192,4 @@ You can use Python lists and dicts from Javascript, and viceversa::
     }
     """)
     context.set_globals(x=dict(a=1, b=2))
-    context.eval_js('for (var k in x) { print(k + ' = ' + x[k]); }')
+    context.eval_js('for (var k in x) { print(k + " = " + x[k]); }')
