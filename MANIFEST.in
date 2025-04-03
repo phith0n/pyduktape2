@@ -1,5 +1,6 @@
 include COPYRIGHT.txt
 include LICENSE.txt
+include pyduktape2.pyx
 include vendor/duk_config.h
 include vendor/duktape.h
 include vendor/duktape.c
@@ -9,3 +10,4 @@ include vendor/duk_print_alert.c
 include vendor/duk_print_alert.h
 include vendor/AUTHORS.txt
 include vendor/LICENSE.txt
+recursive-include tests *.js

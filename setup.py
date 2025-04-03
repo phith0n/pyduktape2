@@ -28,7 +28,7 @@ setup(
     description='Python integration for the Duktape Javascript interpreter',
     long_description=long_description,
     url='https://github.com/phith0n/pyduktape2',
-    license='GPL-2.0-only',
+    license='GPL-2.0-or-later',
     keywords='javascript duktape embed',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
